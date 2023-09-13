@@ -19,13 +19,19 @@ function showResult(result: number): void {
 }
 
 (() => {
-    const num1: string | null = prompt("First Number");
-    const num2: string | null = prompt("Second Number");
+    const num1Input: string | null = prompt("First Number");
+    const num2Input: string | null = prompt("Second Number");
 
-    const num1Conversao = parseFloat(num1 || "0");
-    const num2Conversao = parseFloat(num2 || "0");
-    
-    let result = sum(num1Conversao,num2Conversao);
-    result += multiply(1,2);
-    showResult(result);
+    // Converte as entradas para números (ou NaN se não forem números)
+    const num1: number = parseFloat(num1Input || "0");
+    const num2: number = parseFloat(num2Input || "0");
+
+    // Verifica se as conversões resultaram em números válidos
+    if (!isNaN(num1) && !isNaN(num2)) {
+        let result: number = sum(num1, num2);
+        result += multiply(1, 2);
+        showResult(result);
+    } else {
+        console.log("Entradas inválidas. Certifique-se de inserir números válidos.");
+    }
 })();
