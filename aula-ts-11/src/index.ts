@@ -2,14 +2,16 @@ import express, { Request, Response, json } from "express";
 import { Game } from "./protocols/game-protocol";
 import gamesService from "./service/games-service";
 import httpStatus from "http-status";
+import { validationschema } from "./middlewares/validate-schema";
+import { gameSchema } from "./schemas/games-schemas";
 
 const app = express();
 app.use(json());
 
-app.post("/games", (req: Request, res: Response) => {
+app.post("/games", validationschema(gameSchema), async (req: Request, res: Response) => {
   const body = req.body as Game;
   try {
-    gamesService.createGame(body);
+    await gamesService.createGame(body);
     res.sendStatus(httpStatus.CREATED);
   } catch (error) {
     console.log(error);
@@ -17,8 +19,8 @@ app.post("/games", (req: Request, res: Response) => {
   }
 });
 
-app.get("/games", (req: Request, res: Response) => {
-  const games = gamesService.getGames();
+app.get("/games", async (req: Request, res: Response) => {
+  const games = await gamesService.getGames();
   res.send(games);
 });
 
